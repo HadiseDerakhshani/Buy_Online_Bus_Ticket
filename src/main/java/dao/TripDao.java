@@ -7,6 +7,7 @@ import model.enums.BusType;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.*;
+import org.hibernate.query.Query;
 import org.hibernate.transform.Transformers;
 
 import java.util.Date;
@@ -56,10 +57,16 @@ public class TripDao extends BaseDao {
        return criteria.list();
    }
 
-   public Trip findById(Criteria criteria,int id){
-       SimpleExpression eq = Restrictions.eq("t.id", id);
+   public Trip findById(int id){
+        session=sessionFactory.openSession();
+        session.beginTransaction();
+       Query query = session.createQuery("from Trip where id=:id");
+           query.setParameter("id",id);
+       Trip trip =(Trip) query.uniqueResult();
+
+      /* SimpleExpression eq = Restrictions.eq("t.id", id);
       criteria.add(eq);
-      Trip trip =(Trip) criteria.uniqueResult();
+      Trip trip =(Trip) criteria.uniqueResult();*/
       return trip;
    }
 }

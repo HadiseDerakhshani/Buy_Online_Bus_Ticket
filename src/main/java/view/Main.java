@@ -47,13 +47,14 @@ public class Main {
     }
 
     public static void passengerMenu() {
-        printHeaderPart("Passenger Menu");
-        System.out.println("Enter Information Like Sample: Origin City,Destination City,Date" +
-                ",Number Of Result :");
-
         TripService tripService = new TripService();
+        printHeaderPart("Passenger Menu");
+        System.out.println("Enter Information Like Sample: Origin City,Destination City,Date :");
+        String info=scanner.next();
+        System.out.println("enter Number Of Result : ");
+        int s=scanner.nextInt();
         try {
-            tripService.searchTrip(scanner.next());
+            tripService.searchTrip(info,0,s);
         } catch (ParseException e) {
             e.printStackTrace();
         }
