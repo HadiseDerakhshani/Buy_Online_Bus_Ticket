@@ -20,7 +20,8 @@ public class Main {
                 case 1:
                     managerMenu();
                     break;
-                case 2: passengerMenu();
+                case 2:
+                    passengerMenu();
                     break;
                 default:
                     isContinue = tryAgain();
@@ -50,11 +51,11 @@ public class Main {
         TripService tripService = new TripService();
         printHeaderPart("Passenger Menu");
         System.out.println("Enter Information Like Sample: Origin City,Destination City,Date :");
-        String info=scanner.next();
+        String info = scanner.next();
         System.out.println("enter Number Of Result : ");
-        int s=scanner.nextInt();
+        int s = scanner.nextInt();
         try {
-            tripService.searchTrip(info,0,s);
+            tripService.searchTrip(info, 0, s);
         } catch (ParseException e) {
             e.printStackTrace();
         }

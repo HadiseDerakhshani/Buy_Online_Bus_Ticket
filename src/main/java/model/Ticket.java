@@ -22,7 +22,7 @@ public class Ticket {
     @ManyToOne
     private Trip trip;
     @OneToOne
-    private  Passenger passenger;
+    private Passenger passenger;
 
     @Override
     public String toString() {

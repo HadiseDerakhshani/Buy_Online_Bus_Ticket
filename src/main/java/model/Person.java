@@ -23,7 +23,7 @@ public class Person {
     private String nationalCode;
     private String phoneNumber;
     private Gender gender;
-    private  int age;
+    private int age;
 
 
     @Override

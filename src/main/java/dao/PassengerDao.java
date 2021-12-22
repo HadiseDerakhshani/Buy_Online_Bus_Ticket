@@ -1,20 +1,7 @@
 package dao;
 
-import dto.PassengerDto;
-import dto.TripDto;
 import model.Passenger;
-import model.Ticket;
-import model.Trip;
-import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.Conjunction;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
-import org.hibernate.criterion.SimpleExpression;
-import org.hibernate.transform.Transformers;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class PassengerDao extends BaseDao {
     Session session;

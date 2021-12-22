@@ -5,9 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+
 @Builder
 @Data
 @NoArgsConstructor
@@ -24,7 +23,7 @@ public class Trip {
     private String origin;
     private String destination;
     @OneToOne
-    private Bus buses ;
+    private Bus buses;
 
     @Override
     public String toString() {

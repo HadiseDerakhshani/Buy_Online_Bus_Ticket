@@ -8,27 +8,23 @@ import model.Ticket;
 import model.Trip;
 import model.enums.BusType;
 import model.enums.Gender;
-import org.hibernate.Criteria;
-import org.hibernate.ScrollableResults;
-import org.hibernate.criterion.Projections;
-import org.hibernate.transform.Transformers;
 import service.TripService;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class UserView {
-    TripService tripService=new TripService();
+    TripService tripService = new TripService();
     Scanner scanner = new Scanner(System.in);
     int selectPage = 0;
     int numberTicket;
-    public void searchTrip(String info,int firstResult,int numResult ) throws ParseException {//scanner & Exception & sout
+
+    public void searchTrip(String info, int firstResult, int numResult) throws ParseException {//scanner & Exception & sout
 
 
-        List<TripDto> list = tripService.searchTrip(info,firstResult,numResult);
+        List<TripDto> list = tripService.searchTrip(info, firstResult, numResult);
         int countPage = 1;
         boolean changePage = false;
         int numPage = tripService.getNumPage();
@@ -49,32 +45,33 @@ public class UserView {
                             changePage = checkPage("first");
                         } else {
                             firstResult = (firstResult - numResult < 0) ? 0 : (firstResult - numResult);
-                            list=tripService.pageResult(firstResult, numResult);
-                            countPage-=1;
+                            list = tripService.pageResult(firstResult, numResult);
+                            countPage -= 1;
                         }
                     } else if (selectPage == 1) {
                         if (countPage == numPage) {
                             changePage = checkPage("last");
                         } else {
                             firstResult = firstResult + numResult;
-                           list= tripService.pageResult(firstResult, numResult);
-                           countPage+=1;
+                            list = tripService.pageResult(firstResult, numResult);
+                            countPage += 1;
                         }
                     }
                 }
             }
-        }while (changePage);
+        } while (changePage);
 
         //region Description
-        switch (selectPage){
-            case 2:filter();
-            break;
+        switch (selectPage) {
+            case 2:
+                filter();
+                break;
             case 3:
                 System.out.println("how many trip you want : ");
                 System.out.println("number of trip for buy ticket : ");
                 Trip selectTrip = tripService.findById(scanner.nextInt());
                 int tripCount = scanner.nextInt();
-                for (int i=0;i<tripCount;i++){
+                for (int i = 0; i < tripCount; i++) {
                     List<Ticket> ticketList = buyTicket(selectTrip);
                     System.out.println(ticketList);
                 }
@@ -84,6 +81,7 @@ public class UserView {
         }
         //endregion
     }
+
     public boolean checkPage(String page) {
         System.out.println("page not exit you are in " + page + " page");
         System.out.println("select item :\n1.continue\n 2.filter result\n 3.buy Ticket menu\n 4.exit");
@@ -94,47 +92,48 @@ public class UserView {
             return true;
 
     }
-public void filter(){
-        List<TripDto> tripDtoList=new ArrayList<>();
-    System.out.println("filter by 1.company bus 2.busType 3.price range 4.1 & 2  5.1&3 6.2&3 7.all 8.exit ");
-    switch (scanner.nextInt()) {
 
-        case 1:
-            System.out.println("enter name of company bus : ");
-            tripDtoList = tripService.filter(scanner.next(), null, 0, 0);
-            break;
-        case 2:
-            System.out.println("enter type of bus : ");
-            tripDtoList =  tripService.filter( null, BusType.valueOf(scanner.next().toUpperCase()), 0, 0);
-            break;
-        case 3:
-            System.out.println("enter price range like sample price1,price2 : ");
-            String[] split = scanner.next().split(",");
-            tripDtoList =  tripService.filter( null, null, Integer.parseInt(split[0]), Integer.parseInt(split[1]));
-            break;
-        case 4:
-            System.out.println("enter name type of bus  like sample company,busType: ");
-            String[] split1 = scanner.next().split(",");
-            tripDtoList =  tripService.filter( split1[0], BusType.valueOf(split1[1].toUpperCase()), 0, 0);
-            break;
-        case 5:
-            System.out.println("enter companyName & price range like sample company,price1,price2 : ");
-            String[] split2 = scanner.next().split(",");
-            tripDtoList =  tripService.filter( split2[0], null, Integer.parseInt(split2[1]), Integer.parseInt(split2[2]));
-            break;
-        case 6:
-            System.out.println("enter  busType & price range like sample busType,price1,price2 : ");
-            String[] split3 = scanner.next().split(",");
-            tripDtoList = tripService.filter(null, BusType.valueOf(split3[0].toUpperCase()), Integer.parseInt(split3[1]), Integer.parseInt(split3[2]));
-            break;
-        case 7:
-            System.out.println("enter companyName busType & price range like sample companyName,busType,price1,price2 : ");
-            String[] split4 = scanner.next().split(",");
-            tripDtoList = tripService.filter( split4[0], BusType.valueOf(split4[1].toUpperCase()), Integer.parseInt(split4[2]), Integer.parseInt(split4[3]));
-            break;
+    public void filter() {
+        List<TripDto> tripDtoList = new ArrayList<>();
+        System.out.println("filter by 1.company bus 2.busType 3.price range 4.1 & 2  5.1&3 6.2&3 7.all 8.exit ");
+        switch (scanner.nextInt()) {
 
+            case 1:
+                System.out.println("enter name of company bus : ");
+                tripDtoList = tripService.filter(scanner.next(), null, 0, 0);
+                break;
+            case 2:
+                System.out.println("enter type of bus : ");
+                tripDtoList = tripService.filter(null, BusType.valueOf(scanner.next().toUpperCase()), 0, 0);
+                break;
+            case 3:
+                System.out.println("enter price range like sample price1,price2 : ");
+                String[] split = scanner.next().split(",");
+                tripDtoList = tripService.filter(null, null, Integer.parseInt(split[0]), Integer.parseInt(split[1]));
+                break;
+            case 4:
+                System.out.println("enter name type of bus  like sample company,busType: ");
+                String[] split1 = scanner.next().split(",");
+                tripDtoList = tripService.filter(split1[0], BusType.valueOf(split1[1].toUpperCase()), 0, 0);
+                break;
+            case 5:
+                System.out.println("enter companyName & price range like sample company,price1,price2 : ");
+                String[] split2 = scanner.next().split(",");
+                tripDtoList = tripService.filter(split2[0], null, Integer.parseInt(split2[1]), Integer.parseInt(split2[2]));
+                break;
+            case 6:
+                System.out.println("enter  busType & price range like sample busType,price1,price2 : ");
+                String[] split3 = scanner.next().split(",");
+                tripDtoList = tripService.filter(null, BusType.valueOf(split3[0].toUpperCase()), Integer.parseInt(split3[1]), Integer.parseInt(split3[2]));
+                break;
+            case 7:
+                System.out.println("enter companyName busType & price range like sample companyName,busType,price1,price2 : ");
+                String[] split4 = scanner.next().split(",");
+                tripDtoList = tripService.filter(split4[0], BusType.valueOf(split4[1].toUpperCase()), Integer.parseInt(split4[2]), Integer.parseInt(split4[3]));
+                break;
+
+        }
     }
-}
 
     public List<Ticket> buyTicket(Trip trip) {
         TicketDao ticketDao = new TicketDao();

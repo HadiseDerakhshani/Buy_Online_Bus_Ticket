@@ -7,10 +7,8 @@ import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import java.util.ArrayList;
-import java.util.List;
+
 @Builder
 @NoArgsConstructor
 @Data
@@ -18,7 +16,7 @@ import java.util.List;
 @Entity
 public class Passenger extends Person {
     @OneToOne(cascade = CascadeType.ALL)
-    private Ticket ticket ;
+    private Ticket ticket;
 
 
 }

@@ -20,8 +20,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
 @Data
 public class TripService {
+    static final TripDao tripDao = new TripDao();
     Scanner scanner = new Scanner(System.in);
     int selectPage = 0;
     int numberTicket;
@@ -29,9 +31,8 @@ public class TripService {
     int numPage;
     int countCheck;
     Criteria criteriaFirst;
-    static final TripDao tripDao = new TripDao();
 
-    public List<TripDto> searchTrip(String info,int firstResult,int numResult) throws ParseException {//scanner & Exception & sout
+    public List<TripDto> searchTrip(String info, int firstResult, int numResult) throws ParseException {//scanner & Exception & sout
 
         String[] input = info.split(",");
         Criteria criteria = tripDao.searchTrip(input[0], input[1]
@@ -48,28 +49,25 @@ public class TripService {
 
         criteria.setResultTransformer(Transformers.aliasToBean(TripDto.class));
         List<TripDto> list1 = new ArrayList<>();
-        criteriaFirst=criteria;
-        pageResult(0,numResult);
-        countCheck=1;
+        criteriaFirst = criteria;
+        pageResult(0, numResult);
+        countCheck = 1;
         Criteria criteria1 = criteria;
         //************************************************************
-
-
-            ////
-            // pageResult(list1,numResult);
+        // pageResult(list1,numResult);
         if (selectPage == 3) {
             System.out.println("how many trip you want : ");
             System.out.println("number of trip for buy ticket : ");
-            Trip selectTrip = tripDao.findById( scanner.nextInt());
+            Trip selectTrip = tripDao.findById(scanner.nextInt());
             int tripCount = scanner.nextInt();
-           for (int i=0;i<tripCount;i++){
-               List<Ticket> ticketList = buyTicket(selectTrip);
-               System.out.println(ticketList);
-           }
+            for (int i = 0; i < tripCount; i++) {
+                List<Ticket> ticketList = buyTicket(selectTrip);
+                System.out.println(ticketList);
+            }
         } else if (selectPage == 4) {
             //TODO
         }
-   return criteria.list();
+        return criteria.list();
     }
 
     public boolean checkPage(String page) {
@@ -83,29 +81,31 @@ public class TripService {
 
     }
 
-   public List<TripDto> pageResult(int firstResult,int numResult){
+    public List<TripDto> pageResult(int firstResult, int numResult) {
 
-       List<TripDto> list=new ArrayList<>();
-       boolean changePage = false;
+        List<TripDto> list = new ArrayList<>();
+        boolean changePage = false;
 
-            ScrollableResults scrollableResults = criteriaFirst.scroll();
-            scrollableResults.last();
-              if(countCheck==1) {
-                  totalRecords = scrollableResults.getRowNumber() + 1;
-                  numPage = (totalRecords / numResult) + (totalRecords % numResult);
-              }else
-                  countCheck++;
-            scrollableResults.close();
+        ScrollableResults scrollableResults = criteriaFirst.scroll();
+        scrollableResults.last();
+        if (countCheck == 1) {
+            totalRecords = scrollableResults.getRowNumber() + 1;
+            numPage = (totalRecords / numResult) + (totalRecords % numResult);
+        } else
+            countCheck++;
+        scrollableResults.close();
 
-            criteriaFirst.setFirstResult(firstResult);//id record of result first
-            criteriaFirst.setMaxResults(numResult);//چندتا فیلد
+        criteriaFirst.setFirstResult(firstResult);//id record of result first
+        criteriaFirst.setMaxResults(numResult);//چندتا فیلد
         list = (List<TripDto>) criteriaFirst.list();
 
         return list;
-     }
-     public Trip findById(int id){
+    }
+
+    public Trip findById(int id) {
         return tripDao.findById(id);
-     }
+    }
+
     public List<Ticket> buyTicket(Trip trip) {
         TicketDao ticketDao = new TicketDao();
         PassengerDao passengerDao = new PassengerDao();
@@ -117,13 +117,13 @@ public class TripService {
             Passenger passenger = createPassenger();
             ticket.setTrip(trip);
             ticket.setSeatCount((trip.getBuses().getNumOfReserve()) + 1);
-          // trip.getBuses().setNumOfReserve();
+            // trip.getBuses().setNumOfReserve();
             //sandali
             ticket.setPassenger(passenger);
             passenger.setTicket(ticket);
             ticketDao.save(ticket);
             passengerDao.save(passenger);
-          ticketList.add(ticket);
+            ticketList.add(ticket);
         }
         return ticketList;
 
@@ -143,7 +143,8 @@ public class TripService {
         passenger.setAge(Integer.parseInt(split[5]));
         return passenger;
     }
-    public List<TripDto> filter(String company, BusType busType,int price1,int price2){
+
+    public List<TripDto> filter(String company, BusType busType, int price1, int price2) {
         List<TripDto> filter = tripDao.filter(criteriaFirst, scanner.next(), null, 0, 0);
         return filter;
     }
