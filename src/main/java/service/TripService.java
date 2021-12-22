@@ -52,21 +52,8 @@ public class TripService {
         criteriaFirst = criteria;
         pageResult(0, numResult);
         countCheck = 1;
-        Criteria criteria1 = criteria;
-        //************************************************************
-        // pageResult(list1,numResult);
-        if (selectPage == 3) {
-            System.out.println("how many trip you want : ");
-            System.out.println("number of trip for buy ticket : ");
-            Trip selectTrip = tripDao.findById(scanner.nextInt());
-            int tripCount = scanner.nextInt();
-            for (int i = 0; i < tripCount; i++) {
-                List<Ticket> ticketList = buyTicket(selectTrip);
-                System.out.println(ticketList);
-            }
-        } else if (selectPage == 4) {
-            //TODO
-        }
+
+      
         return criteria.list();
     }
 
