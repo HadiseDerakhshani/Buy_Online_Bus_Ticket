@@ -1,6 +1,5 @@
 package model;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -10,7 +9,6 @@ import java.util.Date;
 
 @Data
 @Entity
-@Builder
 @NoArgsConstructor
 public class Ticket {
     @Id
@@ -31,6 +29,7 @@ public class Ticket {
                 ", SeatCount=" + SeatCount +
                 ", recordReservation=" + recordReservation +
                 ", trip=" + trip +
+                ", passenger=" + passenger +
                 '}';
     }
 }

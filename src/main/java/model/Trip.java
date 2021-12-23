@@ -1,13 +1,12 @@
 package model;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
 
-@Builder
+
 @Data
 @NoArgsConstructor
 @Entity
@@ -22,8 +21,15 @@ public class Trip {
     private double price;
     private String origin;
     private String destination;
-    @OneToOne
+    @ManyToOne
     private Bus buses;
+    private int numOfReserve;
+    private int numOfEmpty = emptySeat();
+
+    private int emptySeat() {
+        return buses.getNumOfSeat() - this.numOfReserve;
+    }
+
 
     @Override
     public String toString() {

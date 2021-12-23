@@ -1,6 +1,5 @@
 package model;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import model.enums.Gender;
@@ -11,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 @Data
-@Builder
 @NoArgsConstructor
 @MappedSuperclass
 public class Person {
