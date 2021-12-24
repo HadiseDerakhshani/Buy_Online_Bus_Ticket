@@ -1,22 +1,19 @@
 package dao;
 
-
-import model.Bus;
+import model.Driver;
 import org.hibernate.Session;
 
 import java.util.List;
 
-public class BusDao extends BaseDao {
-
+public class DriverDao extends BaseDao {
     private Session session;
 
-    public void saveBus(List<Bus> busList) {
+    public void save(List<Driver> driverList) {
         session = builderSession().openSession();
         session.beginTransaction();
-        for (Bus bus : busList)
-            session.persist(bus);
+        for (Driver driver : driverList)
+            session.persist(driver);
         session.getTransaction().commit();
         session.close();
     }
-
 }

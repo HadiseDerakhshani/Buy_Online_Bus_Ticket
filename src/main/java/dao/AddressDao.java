@@ -1,20 +1,18 @@
 package dao;
 
-
-import model.Bus;
+import model.Address;
 import org.hibernate.Session;
 
 import java.util.List;
 
-public class BusDao extends BaseDao {
-
+public class AddressDao extends BusDao {
     private Session session;
 
-    public void saveBus(List<Bus> busList) {
+    public void save(List<Address> addressList) {
         session = builderSession().openSession();
         session.beginTransaction();
-        for (Bus bus : busList)
-            session.persist(bus);
+        for (Address address : addressList)
+            session.persist(address);
         session.getTransaction().commit();
         session.close();
     }

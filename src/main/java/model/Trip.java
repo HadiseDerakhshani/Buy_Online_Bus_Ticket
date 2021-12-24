@@ -1,14 +1,17 @@
 package model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
 
-
-@Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Data
 @Entity
 public class Trip {
     @Id
@@ -21,14 +24,10 @@ public class Trip {
     private double price;
     private String origin;
     private String destination;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Bus buses;
     private int numOfReserve;
-    private int numOfEmpty = emptySeat();
-
-    private int emptySeat() {
-        return buses.getNumOfSeat() - this.numOfReserve;
-    }
+    private int numOfEmpty;
 
 
     @Override
@@ -42,4 +41,5 @@ public class Trip {
                 ", buses=" + buses +
                 '}';
     }
+
 }

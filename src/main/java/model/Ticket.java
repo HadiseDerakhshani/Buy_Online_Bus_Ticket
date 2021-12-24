@@ -1,7 +1,6 @@
 package model;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -9,7 +8,6 @@ import java.util.Date;
 
 @Data
 @Entity
-@NoArgsConstructor
 public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,10 +15,13 @@ public class Ticket {
     private int SeatCount;
     @CreationTimestamp
     private Date recordReservation;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Trip trip;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Passenger passenger;
+
+    public Ticket() {
+    }
 
     @Override
     public String toString() {

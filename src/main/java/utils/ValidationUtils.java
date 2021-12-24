@@ -4,7 +4,7 @@ import exception.InValidUserInfoException;
 
 public class ValidationUtils {
     public static boolean isValidMenu(String input) {
-        if (input.matches("[1-5]+"))
+        if (input.matches("[1-2]+"))
             return true;
         throw new InValidUserInfoException("----entered is not valid you should enter number 1 or 2----");
     }

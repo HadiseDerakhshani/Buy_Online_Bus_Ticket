@@ -1,16 +1,17 @@
 package model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import model.enums.Gender;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 
-@Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Data
 @MappedSuperclass
 public class Person {
     @Id
@@ -20,9 +21,9 @@ public class Person {
     private String family;
     private String nationalCode;
     private String phoneNumber;
+    @Enumerated(EnumType.STRING)
     private Gender gender;
     private int age;
-
 
     @Override
     public String toString() {
@@ -35,4 +36,5 @@ public class Person {
                 ", age=" + age +
                 '}';
     }
+
 }

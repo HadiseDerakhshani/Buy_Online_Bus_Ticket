@@ -6,7 +6,6 @@ import exception.InValidUserInfoException;
 import model.Passenger;
 import model.Ticket;
 import model.Trip;
-import model.enums.BusType;
 import model.enums.Gender;
 import service.PassengerService;
 import service.TicketService;
@@ -24,100 +23,65 @@ public class UserView {
     List<Ticket> ticketList = new ArrayList<>();
     TicketService ticketService = new TicketService();
     PassengerService passengerService = new PassengerService();
-    BusService busService = new BusService();
-    int selectPage = 0;
-    int numberTicket;
-    //
+    boolean exit = false;
 
-    public void searchTrip(String info, int numResult) throws ParseException {//scanner & Exception & sout
-        List<TripDto> list = tripService.searchTrip(info, numResult);
+    public void searchTrip(String info, int firstResult, int numResult) throws ParseException {//scanner & Exception & sout
+        List<TripDto> list = tripService.searchTrip(info, firstResult, numResult);
         int countPage = 1;
         boolean changePage = false;
-        int numPage = tripService.getNumPage(), firstResult = 0;
         do {
-            if (list != null) {
-                System.out.println("----------------------------------");
-                System.out.println("Page Number ==> " + countPage + " of " + numPage);
-                for (TripDto tripDto : list) {
-                    System.out.println(numberTicket + " : " + tripDto);
-                }
-
-                if (numPage > 1) {
-                    System.out.println(" select next page or previous page of result :\n 1.next\n2.previous\n" +
-                            "3.filter result\n 4.buy Ticket menu\n 5.exit");
-                    try {
-                        ValidationUtils.isValidSelectSearch(scanner.next());
-                        selectPage = scanner.nextInt();
-                        switch (selectPage) {
-                            case 1:
-                                if (countPage == numPage) {
-                                    System.out.println("page not exit you are in last page");
-                                    changePage = false;
-                                } else {
-                                    firstResult = firstResult + numResult;
-                                    list = tripService.pageResult(firstResult, numResult);
-                                    countPage += 1;
-                                }
-                                break;
-                            case 2:
-                                if (countPage == 1) {
-                                    System.out.println("page not exit you are in first page");
-                                    changePage = false;
-                                } else {
-                                    firstResult = (firstResult - numResult < 0) ? 0 : (firstResult - numResult);
-                                    list = tripService.pageResult(firstResult, numResult);
-                                    countPage -= 1;
-                                }
-                                break;
-                            case 3:
-                                list = filter();
-                                break;
-                            case 4:
-                                System.out.println("number of trip for buy ticket : ");
-                                ValidationUtils.isValidNumeric(scanner.next());
-                                int numberTrip = Integer.parseInt(scanner.next());
-                                Trip selectTrip = tripService.findById(numberTrip);
-                                System.out.println("how many ticket : ");
-                                int ticketCount = Integer.parseInt(scanner.next());//////
-                                for (int i = 0; i < ticketCount; i++) {
-                                    List<Ticket> tickets = buyTicket(selectTrip);
-                                    tickets.forEach(System.out::println);
-                                    ticketList.addAll(tickets);
-                                }
-                                changePage = true;
-                                break;
-                            //5555
-                        }//switch
-                    } catch (InValidUserInfoException e) {
-                        e.getMessage();
-                        changePage = false;
-                    }
-                } else {
-                    System.out.println(" select next page or previous page of result :\n 1.filter result\n 2.buy Ticket menu\n 3.exit");
-                    try {
-                        ValidationUtils.isValidSelectSearch(scanner.next());
-                        selectPage = scanner.nextInt();
-                        switch (selectPage) {
-                            case 1:
-                                filter();
-                                break;
-                            case 2:
-                                System.out.println("number of trip for buy ticket : ");
-                                ValidationUtils.isValidNumeric(scanner.next());
-                                int numberBuy = Integer.parseInt(scanner.next());
-                                Trip selectTrip = tripService.findById(numberBuy);
-                                List<Ticket> ticketList = buyTicket(selectTrip);
-                                ticketList.forEach(System.out::println);
-
-                                changePage = true;
-                                break;
+            System.out.println("----------------------------------");
+            list.forEach(System.out::println);
+            System.out.println(" select next page or previous page of result :\n 1.next\n2.previous\n" +
+                    "3.filter result\n 4.buy Ticket menu\n 5.exit");
+            try {
+                ValidationUtils.isValidSelectSearch(scanner.next());
+                int selectPage = scanner.nextInt();
+                switch (selectPage) {
+                    case 1:
+                        if (list.size() < numResult && list == null) {
+                            System.out.println("page not exit you are in last page");
+                            changePage = false;
+                        } else {
+                            firstResult = firstResult + numResult;
+                            list = tripService.searchTrip(info, firstResult, numResult);
                         }
-                    } catch (InValidUserInfoException e) {
-                        e.getMessage();
-                        changePage = false;
-                    }
-                }
+                        break;
+                    case 2:
+                        if (firstResult == 0) {
+                            System.out.println("page not exit you are in first page");
+                            changePage = false;
+                        } else {
+                            firstResult = (firstResult - numResult < 0) ? 0 : (firstResult - numResult);
+                            list = tripService.searchTrip(info, firstResult, numResult);
+                        }
+                        break;
+                    case 3:
+                        filter(list);
+                        break;
+                    case 4:
+                        System.out.println("number of trip for buy ticket : ");
+                        ValidationUtils.isValidNumeric(scanner.next());
+                        int numberTrip = Integer.parseInt(scanner.next());
+                        Trip selectTrip = tripService.findById(numberTrip);
+                        System.out.println("how many ticket : ");
+                        int ticketCount = Integer.parseInt(scanner.next());//////
+                        for (int i = 0; i < ticketCount; i++) {
+                            List<Ticket> tickets = buyTicket(selectTrip);
+                            tickets.forEach(System.out::println);
+                            ticketList.addAll(tickets);
+                        }
+                        changePage = true;
+                        break;
+                    case 5:
+                        changePage = true;
+                        exit = true;
+                        break;
 
+                }//switch
+            } catch (InValidUserInfoException e) {
+                e.getMessage();
+                changePage = false;
             }
         } while (changePage);
 
@@ -125,55 +89,55 @@ public class UserView {
     }
 
 
-    public List<TripDto> filter() {
+    public void filter(List<TripDto> list) {
         List<TripDto> tripDtoList = new ArrayList<>();
         boolean isContinue = false;
         String[] split;
         do {
-            System.out.println("filter by 1.company\n bus\n 2.busType\n 3.price range\n 4.Option 1 & 2\n " +
-                    "5.Option 1 & 3\n 6.Option 2 & 3\n 7.all option\n 8.exit ");
+            System.out.println("Filter By 1.Company Bus\n 2.BusType\n 3.Price Range\n 4.Option 1 & 2\n " +
+                    "5.Option 1 & 3\n 6.Option 2 & 3\n 7.All Option\n 8.Exit ");
+            String chose = scanner.next();
             try {
-                ValidationUtils.isValidSelectFilter(scanner.next());
-                switch (scanner.nextInt()) {
-
-                    case 1:
-                        System.out.println("enter name of company bus : ");
-                        tripDtoList = tripService.filter(scanner.next(), null, 0, 0);
+                ValidationUtils.isValidSelectFilter(chose);
+                switch (chose) {
+                    case "1":
+                        System.out.println("Enter Name Of Company Bus : ");
+                        tripDtoList = tripService.filter(list, scanner.next(), null, 0, 0);
                         isContinue = true;
                         break;
-                    case 2:
-                        System.out.println("enter type of bus : ");
-                        tripDtoList = tripService.filter(null, BusType.valueOf(scanner.next().toUpperCase()), 0, 0);
+                    case "2":
+                        System.out.println(" Enter Type Of Bus : ");
+                        tripDtoList = tripService.filter(list, null, scanner.next(), 0, 0);
                         isContinue = true;
                         break;
-                    case 3:
-                        System.out.println("enter price range like sample price1,price2 : ");
+                    case "3":
+                        System.out.println("Enter Price Range Like Sample Price1,price2 : ");
                         split = scanner.next().split(",");
-                        tripDtoList = tripService.filter(null, null, Integer.parseInt(split[0]), Integer.parseInt(split[1]));
+                        tripDtoList = tripService.filter(list, null, null, Integer.parseInt(split[0]), Integer.parseInt(split[1]));
                         isContinue = true;
                         break;
-                    case 4:
-                        System.out.println("enter name type of bus  like sample company,busType: ");
+                    case "4":
+                        System.out.println("Enter Name Type Of Bus  Like Sample Company,bustype: ");
                         split = scanner.next().split(",");
-                        tripDtoList = tripService.filter(split[0], BusType.valueOf(split[1].toUpperCase()), 0, 0);
+                        tripDtoList = tripService.filter(list, split[0], split[1], 0, 0);
                         isContinue = true;
                         break;
-                    case 5:
-                        System.out.println("enter companyName & price range like sample company,price1,price2 : ");
+                    case "5":
+                        System.out.println("Enter CompanyName & Price Range Like Sample Company,price1,price2 : ");
                         split = scanner.next().split(",");
-                        tripDtoList = tripService.filter(split[0], null, Integer.parseInt(split[1]), Integer.parseInt(split[2]));
+                        tripDtoList = tripService.filter(list, split[0], null, Integer.parseInt(split[1]), Integer.parseInt(split[2]));
                         isContinue = true;
                         break;
-                    case 6:
-                        System.out.println("enter  busType & price range like sample busType,price1,price2 : ");
+                    case "6":
+                        System.out.println("Enter  Bustype & Price Range Like Sample BusType,price1,price2 : ");
                         split = scanner.next().split(",");
-                        tripDtoList = tripService.filter(null, BusType.valueOf(split[0].toUpperCase()), Integer.parseInt(split[1]), Integer.parseInt(split[2]));
+                        tripDtoList = tripService.filter(list, null, split[0], Integer.parseInt(split[1]), Integer.parseInt(split[2]));
                         isContinue = true;
                         break;
-                    case 7:
-                        System.out.println("enter companyName busType & price range like sample companyName,busType,price1,price2 : ");
+                    case "7":
+                        System.out.println("Enter CompanyName BusType & Price Range Like Sample CompanyName,busType,price1,price2 : ");
                         split = scanner.next().split(",");
-                        tripDtoList = tripService.filter(split[0], BusType.valueOf(split[1].toUpperCase()), Integer.parseInt(split[2]), Integer.parseInt(split[3]));
+                        tripDtoList = tripService.filter(list, split[0], split[1], Integer.parseInt(split[2]), Integer.parseInt(split[3]));
                         isContinue = true;
                         break;
                 }
@@ -184,7 +148,8 @@ public class UserView {
             }
         } while (isContinue);
 
-        return tripDtoList;
+        tripDtoList.forEach(System.out::println);
+
     }
 
     public List<Ticket> buyTicket(Trip trip) {

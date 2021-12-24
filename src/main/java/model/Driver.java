@@ -2,8 +2,8 @@ package model;
 
 import lombok.Data;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import java.util.Date;
 
@@ -11,9 +11,10 @@ import java.util.Date;
 @Entity
 public class Driver extends Person {
     private Date birthDate;
-    private Date beginning;
-    @OneToOne
+    private Date BeginContract;
+    @OneToOne(cascade = CascadeType.ALL)
     private Address address;
-    @ManyToOne
-    private Bus bus;
+
+    public Driver() {
+    }
 }

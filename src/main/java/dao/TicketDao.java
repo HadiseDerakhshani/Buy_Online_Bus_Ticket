@@ -11,7 +11,7 @@ import org.hibernate.transform.Transformers;
 import java.util.List;
 
 public class TicketDao extends BaseDao {
-    Session session;
+    private Session session;
 
     public void save(Ticket ticket) {
         session = builderSession().openSession();

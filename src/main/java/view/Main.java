@@ -13,21 +13,24 @@ public class Main {
     static boolean isContinue;
 
     public static void main(String[] args) {
+        try {
+            InitializationEntity initializationEntity = new InitializationEntity();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         isContinue = false;
         printHeaderPart("WELL COME TO ONLINE BUS TICKET PURCHASE SYSTEM");
         do {
             System.out.println("Select Item :\n 1.Manager\n 2.Passenger");
-
-
             try {
-                ValidationUtils.isValidMenu(scanner.next());
-                int select = Integer.parseInt(scanner.next());
+                String select = scanner.next();
+                ValidationUtils.isValidMenu(select);
                 switch (select) {
-                    case 1:
+                    case "1":
                         managerMenu();
                         isContinue = true;
                         break;
-                    case 2:
+                    case "2":
                         passengerMenu();
                         isContinue = true;
                         break;
@@ -55,6 +58,7 @@ public class Main {
                 if (username.toLowerCase().equals(manager.getUserName()) &&
                         password.toLowerCase().equals(manager.getPassword())) {
                     isContinue = true;
+                    break;
                 }
             } catch (InValidUserInfoException e) {
                 System.out.println(e.getMessage());
@@ -62,7 +66,7 @@ public class Main {
             }
         } while (isContinue);
         userView.showReport();
-        //call method for show of userView
+
     }
 
     public static void passengerMenu() {
@@ -77,7 +81,7 @@ public class Main {
                 System.out.println("enter Number Of Result : ");
                 String numOfResult = scanner.next();
                 ValidationUtils.isValidNumeric(numOfResult);
-                userView.searchTrip(info, Integer.parseInt(numOfResult));
+                userView.searchTrip(info, 0, Integer.parseInt(numOfResult));
                 isContinue = true;
             } catch (InValidUserInfoException | ParseException e) {
                 e.getMessage();
