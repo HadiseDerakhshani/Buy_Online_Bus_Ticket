@@ -15,15 +15,15 @@
         <property name="connection.pool_size">10</property>
         <property name="show_sql">true</property>
         <property name="format_sql">true</property>
+        <mapping class="model.Ticket"/>
+        <mapping class="model.Bus"/>
+        <mapping class="model.Trip"/>
+        <mapping class="model.Passenger"/>
+        <mapping class="model.Address"/>
+        <mapping class="model.Person"/>
+        <mapping class="model.Driver"/>
 
-      <!--  <mapping class="model.Student"/>
-        <mapping resource="cofig/teacher.hbm.xml"/>-->
 
-        <!--
-        <mapping class="inheritance.Manager"/>
-   <mapping class="inheritance.Employee"/>
-   <mapping class="inheritance.Programmer"/>
-        -->
 
     </session-factory>
 </hibernate-configuration>
