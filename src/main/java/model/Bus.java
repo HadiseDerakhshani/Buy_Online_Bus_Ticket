@@ -17,7 +17,9 @@ import java.util.List;
 @Data
 @Entity
 public class Bus {
+
     @Id
+    private int id;
     private int plaque;
     private String company;
     private int numOfSeat;

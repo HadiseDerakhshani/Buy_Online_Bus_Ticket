@@ -12,9 +12,8 @@ import java.util.Date;
 public class Driver extends Person {
     private Date birthDate;
     private Date BeginContract;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     private Address address;
-
     public Driver() {
     }
 }

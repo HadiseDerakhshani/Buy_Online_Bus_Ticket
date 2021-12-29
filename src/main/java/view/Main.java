@@ -2,6 +2,7 @@ package view;
 
 import exception.InValidUserInfoException;
 import model.Manager;
+import service.DataBaseInitializer;
 import utils.ValidationUtils;
 
 import java.text.ParseException;
@@ -14,7 +15,7 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-            InitializationEntity initializationEntity = new InitializationEntity();
+            DataBaseInitializer initializationEntity = new DataBaseInitializer();
         } catch (ParseException e) {
             e.printStackTrace();
         }

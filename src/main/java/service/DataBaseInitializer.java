@@ -1,4 +1,4 @@
-package view;
+package service;
 
 import model.Address;
 import model.Bus;
@@ -16,13 +16,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InitializationEntity {
+public class DataBaseInitializer {
     AddressService addressService = new AddressService();
     DriverService driverService = new DriverService();
     BusService busService = new BusService();
     TripService tripService = new TripService();
 
-    public InitializationEntity() throws ParseException {
+    public DataBaseInitializer() throws ParseException {
         initializationAddress();
     }
 

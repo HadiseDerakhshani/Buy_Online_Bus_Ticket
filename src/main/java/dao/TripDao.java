@@ -79,7 +79,7 @@ public class TripDao extends BaseDao {
         Query query = session.createQuery(" update Trip set numOfReserve=:reserve ,numOfEmpty=:empty where id=:id");
         query.setParameter("id", trip.getId());
         query.setParameter("reserve", trip.getNumOfReserve() + 1);
-        query.setParameter("reserve", trip.getNumOfEmpty() - 1);
+        query.setParameter("empty", trip.getNumOfEmpty() - 1);
         query.executeUpdate();
         session.getTransaction().commit();
         session.close();

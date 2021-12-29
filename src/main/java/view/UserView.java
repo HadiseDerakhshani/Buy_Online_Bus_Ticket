@@ -32,15 +32,15 @@ public class UserView {
         do {
             System.out.println("----------------------------------");
             list.forEach(System.out::println);
-            System.out.println(" select next page or previous page of result :\n 1.next\n2.previous\n" +
-                    "3.filter result\n 4.buy Ticket menu\n 5.exit");
+            System.out.println(" Select Option For Result :\n 1.Next\n2.Previous\n" +
+                    "3.Filter Result\n 4.Buy Ticket Menu\n 5.Exit");
             try {
                 ValidationUtils.isValidSelectSearch(scanner.next());
                 int selectPage = scanner.nextInt();
                 switch (selectPage) {
                     case 1:
                         if (list.size() < numResult && list == null) {
-                            System.out.println("page not exit you are in last page");
+                            System.out.println("Page Not Exit You Are In Last Page");
                             changePage = false;
                         } else {
                             firstResult = firstResult + numResult;
@@ -49,7 +49,7 @@ public class UserView {
                         break;
                     case 2:
                         if (firstResult == 0) {
-                            System.out.println("page not exit you are in first page");
+                            System.out.println("Page Not Exit You Are In First Page");
                             changePage = false;
                         } else {
                             firstResult = (firstResult - numResult < 0) ? 0 : (firstResult - numResult);
@@ -129,7 +129,7 @@ public class UserView {
                         isContinue = true;
                         break;
                     case "6":
-                        System.out.println("Enter  Bustype & Price Range Like Sample BusType,price1,price2 : ");
+                        System.out.println("Enter  BusType & Price Range Like Sample BusType,price1,price2 : ");
                         split = scanner.next().split(",");
                         tripDtoList = tripService.filter(list, null, split[0], Integer.parseInt(split[1]), Integer.parseInt(split[2]));
                         isContinue = true;

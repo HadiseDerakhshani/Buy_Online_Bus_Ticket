@@ -16,12 +16,15 @@
         <property name="show_sql">true</property>
         <property name="format_sql">true</property>
 
-        <mapping class="model.Ticket"/>
-        <mapping class="model.Bus"/>
+        <!--  <mapping class="model.Student"/>
+          <mapping resource="cofig/teacher.hbm.xml"/>-->
         <mapping class="model.Trip"/>
-        <mapping class="model.Passenger"/>
-        <mapping class="model.Address"/>
+        <mapping class="model.Bus"/>
         <mapping class="model.Driver"/>
+        <mapping class="model.Address"/>
+        <mapping class="model.Ticket"/>
+        <mapping class="model.Person"/>
+        <mapping class="model.Passenger"/>
 
 
     </session-factory>
